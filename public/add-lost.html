@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Found Item | U-Board</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#FF5757] min-h-screen flex items-center justify-center p-4">
+  
+    <div class="relative z-10 w-full max-w-lg bg-white rounded-[40px] shadow-2xl p-8 overflow-hidden">
+        <div class="flex items-center mb-6">
+            <a href="l&f.html" class="text-3xl font-bold text-gray-400 hover:text-red-500 transition-colors">✕</a>
+            <h2 class="flex-1 text-center text-4xl font-story text-[#A890A6] italic">Lost</h2>
+        </div>
+
+        <form action="l&f.html">
+            <div class="space-y-5">
+                <div class="w-full h-48 bg-gray-50 rounded-[30px] border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-gray-400 hover:border-[#F9C7E3] cursor-pointer transition-all group">
+                    <div class="text-5xl group-hover:scale-110 transition-transform">📷</div>
+                    <p class="font-semibold mt-2">Add Photo</p>
+                </div>
+
+                <div class="space-y-4">
+                    <input type="text" placeholder="Item Name..." class="w-full border-b-2 border-gray-100 py-3 focus:outline-none focus:border-[#F9C7E3] font-semibold text-lg transition-colors">
+                    
+                    <input type="text" placeholder="Location..." class="w-full border-b-2 border-gray-100 py-3 focus:outline-none focus:border-[#F9C7E3] text-lg transition-colors">
+                    
+                    <textarea placeholder="Description & Contact..." rows="3" class="w-full bg-gray-50 rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-[#F9C7E3] text-lg"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-[#d10000] text-white py-4 rounded-full mt-4 text-xl font-bold shadow-lg hover:bg-[#8e758c] transition-all active:scale-95 uppercase tracking-widest">
+                    POSTING
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
