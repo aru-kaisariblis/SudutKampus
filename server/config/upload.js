@@ -1,34 +1,28 @@
 const multer = require('multer');
 const path = require('path');
 
-// 1. Atur Lokasi Penyimpanan dan Nama File
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // Simpan file di folder 'uploads' di root directory
-        cb(null, 'uploads/');
+        // Simpan di folder uploads di luar folder server
+        cb(null, path.join(__dirname, '../../uploads'));
     },
     filename: function (req, file, cb) {
-        // Ubah nama file biar unik (pake tanggal + detik)
-        // Contoh: file-17092833.jpg
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
     }
 });
 
-// 2. Filter: Hanya boleh upload gambar (jpg, jpeg, png)
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+    if (file.mimetype.startsWith('image/')) {
         cb(null, true);
     } else {
-        cb(null, false); // Tolak file selain gambar
+        cb(new Error('Bukan gambar!'), false);
     }
 };
 
 const upload = multer({ 
     storage: storage,
-    limits: {
-        fileSize: 1024 * 1024 * 5 // Batas ukuran file 5MB
-    },
+    limits: { fileSize: 5 * 1024 * 1024 }, // Max 5MB
     fileFilter: fileFilter
 });
 
