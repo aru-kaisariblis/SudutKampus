@@ -113,43 +113,56 @@ if (searchInput) {
     });
 }
 /*+add button logic*/
+/* --- FAB & INPUT MODAL LOGIC --- */
 const mainBtn = document.getElementById('fab-main-btn');
 const fabMenu = document.getElementById('fab-menu');
 const fabOverlay = document.getElementById('fab-overlay');
 const fabIcon = document.getElementById('fab-icon');
+const inputModal = document.getElementById('input-modal');
 
-// Pastikan elemen ada sebelum menambah event listener
-if (mainBtn) {
-    mainBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Mencegah event "gelembung" ke elemen lain
-        const isOpen = fabMenu.classList.contains('menu-visible');
-
-        if (!isOpen) {
-            fabMenu.classList.add('menu-visible');
-            fabOverlay.classList.add('overlay-visible');
-            fabIcon.style.transform = 'rotate(45deg)';
-        } else {
-            closeFab();
-        }
-    });
-}
-
-if (fabOverlay) {
-    fabOverlay.addEventListener('click', closeFab);
-    menuLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        // Jangan tambahkan e.preventDefault() agar bisa pindah ke add-found.html atau add-lost.html
-        console.log("Navigating to: " + link.getAttribute('href'));
-        closeFab(); 
-    });
-});
-}
+// Fungsi menutup FAB
 function closeFab() {
-    if (fabMenu) {
-        fabMenu.classList.remove('menu-visible');
-        fabOverlay.classList.remove('overlay-visible');
-        fabIcon.style.transform = 'rotate(0deg)';
-    }
+    fabMenu.classList.remove('menu-visible');
+    fabOverlay.classList.remove('overlay-visible');
+    fabIcon.style.transform = 'rotate(0deg)';
 }
 
-//FORM
+// Klik tombol +
+mainBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = fabMenu.classList.contains('menu-visible');
+    if (!isOpen) {
+        fabMenu.classList.add('menu-visible');
+        fabOverlay.classList.add('overlay-visible');
+        fabIcon.style.transform = 'rotate(45deg)';
+    } else {
+        closeFab();
+    }
+});
+
+// Fungsi Membuka Form (Dipanggil dari atribut onclick di HTML)
+function openForm(type) {
+    closeFab(); // Tutup menu FAB dulu
+    
+    const title = document.getElementById('modal-form-title');
+    const btn = document.getElementById('submit-btn');
+    
+    title.innerText = type;
+    // Set warna tombol Posting sesuai tipe
+    btn.style.backgroundColor = (type === 'Lost') ? '#f87171' : '#66BB6A';
+    
+    inputModal.classList.remove('hidden');
+}
+
+// Fungsi Menutup Form
+function closeForm() {
+    inputModal.classList.add('hidden');
+}
+
+// Tutup modal jika klik di area blur (luar form)
+inputModal.addEventListener('click', (e) => {
+    if (e.target === inputModal) closeForm();
+});
+
+// Pastikan overlay FAB juga bisa menutup FAB
+fabOverlay?.addEventListener('click', closeFab);
