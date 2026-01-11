@@ -1,1 +1,29 @@
-[]
+{
+  "confessions": [
+    {
+      "id": 1768130678132,
+      "pesan": "Siap mati muda dek?",
+      "sender": "RajaIblis",
+      "recipient": "Pahlawan",
+      "color": "#FFF9C4",
+      "tanggal": "11/1/2026"
+    },
+    {
+      "id": 1768130731088,
+      "pesan": "Siap mati muda dek?",
+      "sender": "kaisar kegelapan",
+      "recipient": "gumi",
+      "color": "#FFF9C4",
+      "tanggal": "11/1/2026"
+    },
+    {
+      "id": 1768130770547,
+      "pesan": "Mole decks",
+      "sender": "Arung",
+      "recipient": "Everyone",
+      "color": "#C3E2FF",
+      "tanggal": "11/1/2026"
+    }
+  ],
+  "items": []
+}

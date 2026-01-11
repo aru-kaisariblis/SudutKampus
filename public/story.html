@@ -28,7 +28,7 @@
         <main class="pt-32 pb-20 px-4 flex justify-center">
             <div class="w-full max-w-6xl bg-[#D9C5B2] rounded-[40px] p-6 md:p-10 shadow-inner border-[10px] border-[#C4B2A2] min-h-[600px]">
                 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                <div id="stories-container" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                     <div class="memo bg-[#FFF9C4] rotate-[-2deg]">
                         <p>Text Via Wa</p>
                     </div>
@@ -67,8 +67,13 @@
                         <label class="cursor-pointer"><input type="radio" name="color" value="#C2F0C2" class="hidden peer"><div class="w-10 h-10 bg-[#C2F0C2] rounded-full border-2 peer-checked:border-blue-500"></div></label>
                         <label class="cursor-pointer"><input type="radio" name="color" value="#E1BEE7" class="hidden peer"><div class="w-10 h-10 bg-[#E1BEE7] rounded-full border-2 peer-checked:border-blue-500"></div></label>
                     </div>
-                    <input type="text" placeholder="Nama/Anonim..." class="w-full border-b-2 border-gray-100 py-2 mb-4 focus:outline-none focus:border-blue-300 font-semibold text-lg">
-                    <textarea placeholder="Tulis ceritamu di sini..." rows="5" class="w-full bg-gray-50 rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-100 text-lg"></textarea>
+                    
+                    <input id="inputSender" type="text" placeholder="Nama/Anonim..." class="w-full border-b-2 border-gray-100 py-2 mb-4 focus:outline-none focus:border-blue-300 font-semibold text-lg">
+                    
+                    <input id="inputRecipient" type="text" placeholder="Untuk siapa..." class="w-full border-b-2 border-gray-100 py-2 mb-4 focus:outline-none focus:border-blue-300 font-semibold text-lg">
+                    
+                    <textarea id="inputMessage" placeholder="Tulis ceritamu di sini..." rows="5" class="w-full bg-gray-50 rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-100 text-lg"></textarea>
+                    
                     <button type="submit" class="w-full bg-[#0056b3] text-white py-4 rounded-full mt-6 text-xl font-bold shadow-lg hover:bg-blue-700 transition-colors">POSTING</button>
                 </form>
             </div>
