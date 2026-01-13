@@ -144,29 +144,68 @@ const detailModal = document.getElementById('detail-modal');
 const closeDetail = document.getElementById('close-detail');
 
 // Fungsi untuk membuka detail
+/* --- UPDATE FUNGSI DETAIL (VERSI WHATSAPP) --- */
+// Helper: Format 0812 jadi 62812
+function formatWhatsApp(number) {
+    if (!number) return '';
+    let cleaned = number.toString().replace(/\D/g, '');
+    if (cleaned.startsWith('0')) cleaned = '62' + cleaned.slice(1);
+    return cleaned;
+}
+
+// GANTI fungsi openDetail yang lama dengan ini:
 function openDetail(card) {
-    const name = card.querySelector('p').innerText;
-    // Mengambil lokasi
-    const location = card.querySelector('span.text-sm').innerText;
-    // MENGAMBIL WAKTU (Cari span yang ada di dalam div bawah)
-    const time = card.querySelector('.font-mono')?.innerText || "Waktu tidak tersedia";
-    
-    const status = card.classList.contains('found') ? 'Found' : 'Lost';
-    const statusBg = card.classList.contains('found') ? '#4ade80' : '#f87171';
-    
-    // Sinkronisasi Data ke Modal
+    const detailModal = document.getElementById('detail-modal');
+
+    // 1. Ambil Data dari Atribut HTML (yang disiapkan loadItems)
+    const name = card.getAttribute('data-name');
+    const status = card.getAttribute('data-status');
+    const contact = card.getAttribute('data-contact'); 
+    const location = card.getAttribute('data-location') || '-';
+    const img = card.getAttribute('data-img');
+    const date = card.getAttribute('data-date');
+    const desc = card.getAttribute('data-desc') || '';
+
+    // 2. Isi ke Modal HTML
     document.getElementById('detail-name').innerText = name;
-    document.getElementById('detail-location').querySelector('span').innerText = location;
     
-    // MASUKKAN WAKTU KE MODAL
-    document.getElementById('detail-time').querySelector('span').innerText = time;
+    // Lokasi & Waktu
+    const locEl = document.getElementById('detail-location');
+    if(locEl) locEl.querySelector('span').innerText = location;
     
-    document.getElementById('detail-status').innerText = status;
-    document.getElementById('detail-status').style.backgroundColor = statusBg;
+    const timeEl = document.getElementById('detail-time');
+    if(timeEl) timeEl.querySelector('span').innerText = date;
     
-    document.getElementById('detail-desc').innerText = "Kontak & Detail: Silakan cek informasi yang tertera di sini. " + (status === 'Lost' ? "Bagi yang menemukan hubungi nomor di atas." : "Bagi pemilik sah silakan hubungi nomor di atas.");
-    
-    document.getElementById('detail-img').src = "https://via.placeholder.com/400"; 
+    // Foto
+    document.getElementById('detail-img').src = img;
+
+    // Status Badge
+    const statusElem = document.getElementById('detail-status');
+    statusElem.innerText = status;
+    statusElem.className = status === 'HILANG' 
+        ? 'status-tag bg-red-400 text-white px-4 py-1 rounded-full text-sm font-bold uppercase' 
+        : 'status-tag bg-green-400 text-white px-4 py-1 rounded-full text-sm font-bold uppercase';
+
+    // 3. Render Deskripsi & Tombol WhatsApp
+    const descContainer = document.getElementById('detail-desc');
+    const waNumber = formatWhatsApp(contact);
+    const waLink = `https://wa.me/${waNumber}?text=Halo, soal postingan *${name}* di U-Board...`;
+
+    const actionText = status === 'HILANG' ? "Menemukan barang ini?" : "Ini barang milikmu?";
+
+    descContainer.innerHTML = `
+        <div class="flex flex-col gap-3">
+            <p class="italic text-gray-600">"${desc}"</p>
+            <hr class="border-gray-200">
+            <div class="text-center mt-2">
+                <p class="text-sm text-gray-500 mb-2 font-bold">${actionText}</p>
+                <a href="${waLink}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 px-6 rounded-full shadow-md w-full no-underline transition-transform hover:scale-105">
+                    Hubungi via WhatsApp
+                </a>
+                <p class="text-[10px] text-gray-400 mt-2 font-mono">Nomor: ${contact}</p>
+            </div>
+        </div>
+    `;
 
     detailModal.classList.remove('hidden');
 }
@@ -301,44 +340,52 @@ fabOverlay?.addEventListener('click', closeFab);
 
 /* --- INTEGRASI BACKEND LOST & FOUND --- */
 
+/* --- INTEGRASI: LOAD BARANG DARI SERVER --- */
 async function loadItems() {
     try {
         const res = await fetch(`${API_URL}/items`);
         const data = await res.json();
-        const container = document.getElementById('lost-found-container'); // Pastikan ID ini ada di HTML Grid kamu
+        const container = document.getElementById('items-grid'); 
 
         if(container) {
-            container.innerHTML = ''; // Bersihkan dummy
+            container.innerHTML = ''; // Hapus data lama/dummy
 
             data.forEach(item => {
-                // Tentukan class 'lost' atau 'found' biar Filter temanmu jalan
                 const categoryClass = item.status === 'HILANG' ? 'lost' : 'found';
-                const statusColor = item.status === 'HILANG' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600';
-                
-                // Gunakan foto dari server atau placeholder
+                const statusColor = item.status === 'HILANG' ? 'bg-red-400' : 'bg-green-400';
                 const imgUrl = item.foto ? `http://localhost:3000${item.foto}` : 'https://via.placeholder.com/150';
 
-                // Render HTML Card (Struktur disesuaikan biar fungsi openDetail temanmu jalan)
-                // Perhatikan: Kita simpan data kontak di atribut 'data-contact' biar gampang diambil
+                // Cegah error null/undefined
+                const lokasi = item.lokasi || '-';
+                const deskripsi = item.deskripsi || 'Tidak ada deskripsi.';
+                const kontak = item.kontak || '';
+
+                // HTML KARTU (Dengan atribut data- lengkap)
                 const html = `
-                    <div class="item-card ${categoryClass} bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex flex-col gap-3"
-                         onclick="openDetailBackend(this)" 
+                    <div class="item-card ${categoryClass} bg-white flex flex-col p-4 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer"
+                         onclick="openDetailBackend(this)"
                          data-name="${item.nama}"
                          data-status="${item.status}"
-                         data-contact="${item.kontak}"
+                         data-contact="${kontak}"
+                         data-location="${lokasi}"
+                         data-desc="${deskripsi}"
                          data-img="${imgUrl}"
                          data-date="${item.tanggal}">
                         
-                        <div class="relative h-40 w-full overflow-hidden rounded-lg">
+                        <div class="relative h-40 w-full overflow-hidden rounded-lg mb-3">
                             <img src="${imgUrl}" class="w-full h-full object-cover">
-                            <span class="absolute top-2 right-2 px-2 py-1 rounded text-xs font-bold ${statusColor}">
+                            <span class="absolute top-2 right-2 px-2 py-1 rounded text-xs font-bold ${statusColor} text-white">
                                 ${item.status}
                             </span>
                         </div>
                         
-                        <div>
-                            <p class="font-bold text-lg text-gray-800">${item.nama}</p>
-                            <span class="text-sm text-gray-400">📅 ${item.tanggal}</span>
+                        <div class="flex-grow">
+                            <p class="font-bold text-lg text-gray-800 line-clamp-1">${item.nama}</p>
+                            <span class="text-sm text-gray-500">📍 ${lokasi}</span>
+                        </div>
+
+                        <div class="mt-2 pt-2 border-t border-dashed border-gray-100">
+                            <span class="text-[10px] text-gray-400 font-mono italic">🕒 ${item.tanggal}</span>
                         </div>
                     </div>
                 `;
@@ -382,44 +429,56 @@ function openDetailBackend(card) {
 // Panggil loadItems saat web dibuka
 loadItems();
 
-/*waktu post
-/* --- LOGIKA POSTING & TIMESTAMP --- */
-const lfPostForm = document.getElementById('lf-post-form');
+/* --- INTEGRASI: POSTING BARANG --- */
+const postForm = document.getElementById('lf-post-form');
 
-lfPostForm?.addEventListener('submit', (e) => {
-    e.preventDefault(); 
+if (postForm) {
+    postForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    // Ambil input berdasarkan ID yang baru kita tambahkan di HTML
-    const itemName = document.getElementById('input-item-name').value;
-    const itemLocation = document.getElementById('input-item-location').value;
-    const itemType = document.getElementById('modal-form-title').innerText; 
-    
-    // Buat waktu sekarang
-    const now = new Date();
-    const timeString = now.toLocaleDateString('id-ID', { 
-        day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
+        // 1. Ambil semua data dari input form
+        const formData = new FormData(postForm);
+
+        // 2. Tambahkan status manual
+        const typeTitle = document.getElementById('modal-form-title').innerText;
+        const statusValue = (typeTitle === 'Lost') ? 'HILANG' : 'DITEMUKAN';
+        formData.append('status', statusValue); 
+
+        // ============================================================
+        // 🔴 CCTV / DEBUGGING (Tambahan Penting)
+        // Kode ini akan mencetak isi paket data ke Console Browser
+        console.log("=== SEDANG MENGIRIM DATA ===");
+        let isDataEmpty = true;
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]); 
+            if (pair[0] === 'nama' && pair[1].trim() !== '') isDataEmpty = false;
+        }
+        
+        if (isDataEmpty) {
+            alert("⚠️ BAHAYA: Browser mendeteksi Nama Barang kosong! Cek HTML kamu.");
+            // Kita biarkan tetap kirim supaya bisa lihat error di server juga
+        }
+        // ============================================================
+
+        try {
+            // 3. Kirim ke Server
+            const response = await fetch(`${API_URL}/items`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                alert("Berhasil memposting barang! 🎉");
+                closeForm();      // Tutup modal
+                postForm.reset(); // Bersihkan form
+                loadItems();      // Refresh tampilan otomatis
+            } else {
+                alert("Gagal posting, cek koneksi server.");
+            }
+
+        } catch (err) {
+            console.error(err);
+            alert("Terjadi kesalahan sistem.");
+        }
     });
-
-    const grid = document.getElementById('items-grid');
-    const newCard = document.createElement('div');
-    
-    const statusColor = itemType === 'Lost' ? 'bg-red-400' : 'bg-green-400';
-    const randomRotation = Math.floor(Math.random() * 5) - 2; 
-
-    newCard.className = `item-card bg-white ${itemType.toLowerCase()} flex flex-col`;
-    newCard.style.transform = `rotate(${randomRotation}deg)`;
-
-    // Template kartu yang memiliki Timestamp
-    newCard.innerHTML = `
-        <div class="status-tag ${statusColor} text-white">${itemType}</div>
-        <p class="text-xl font-semibold">${itemName}</p>
-        <span class="text-sm text-gray-500">Lokasi: ${itemLocation}</span>
-        <div class="mt-auto pt-2 border-t border-dashed border-gray-100">
-            <span class="text-[10px] text-gray-400 font-mono italic">🕒 ${timeString}</span>
-        </div>
-    `;
-
-    grid.prepend(newCard); // Tambahkan ke mading
-    closeForm();           // Tutup modal
-    lfPostForm.reset();    // Kosongkan form
-});
+}
