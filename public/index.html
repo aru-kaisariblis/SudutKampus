@@ -1,56 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>U-Board | Mading Unhas</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="css/style.css">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    </head>
-    <body class="bg-gradient-to-b from-[#FFF9C4] to-[#E0F2FE] min-h-screen flex flex-col items-center justify-center p-6">
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U-Board | Mading Digital Unhas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="main-gradient min-h-screen flex flex-col items-center justify-center">
+<div></div>
+    <div class="puzzle-piece top-[10%] left-[5%] rotate-[-20deg] bg-red-400"></div>
+    <div class="puzzle-piece top-[25%] left-[85%] rotate-[30deg] bg-yellow-400"></div>
+    <div class="puzzle-piece top-[60%] left-[10%] rotate-[10deg] bg-blue-400"></div>
+    <div class="puzzle-piece top-[75%] left-[70%] rotate-[-40deg] bg-green-400"></div>
+    <div class="puzzle-piece top-[40%] left-[20%] rotate-[15deg] bg-purple-400"></div>
+    <div class="puzzle-piece top-[5%] left-[70%] rotate-[-50deg] bg-gray-400"></div>
+    <div class="puzzle-piece top-[90%] left-[50%] rotate-[25deg] bg-pink-400"></div>
+    <div class="puzzle-piece top-[45%] left-[5%] rotate-[-10deg] bg-orange-400"></div>
+</div>
 
-        <header>
-        <nav id="main-nav" class="w-full flex justify-between items-center px-8 py-6 fixed top-0 left-0 transition-transform duration-300 z-50">
-            <div class="logo-u-board">U-Board</div>
-            <button class="nav-toggle">
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </button>
-        </nav>
+    <header class="text-center mb-12 relative z-10">
+        <h1 class="logo-u-board text-6xl md:text-8xl font-extrabold text-maroon-unhas tracking-tight">U-BOARD</h1>
+        <h2 class="text-maroon-unhas text-3xl md:text-4xl font-semibold mt-4">MADING DIGITAL UNHAS</h2>
     </header>
 
-    <main class="main-gradient min-h-screen flex flex-col items-center justify-center p-6 pt-15">
-        
-        <div class="text-center mb-8">
-            <h1 class="text-[#800000] text-4xl md:text-7xl font-bold tracking-widest uppercase">
-                MADING UNHAS
-            </h1>
-        </div>
+    <main class="flex flex-col md:flex-row gap-8 relative z-10">
+        <a href="story.html" class="card card-blue hover:scale-105 transition-transform duration-300">
+            <div class="icon-container mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-maroon-unhas" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+            </div>
+            <h3 class="text-story text-maroon-unhas text-4xl font-poppin">Story</h3>
+            <p class="mt-2 text-center text-gray-700 max-w-xs font-poppins text-sm">Sampaikan keluh kesah atau apresiasi di sini!</p>
+        </a>
 
-        <div class="flex flex-col md:flex-row gap-8 w-full max-w-7xl justify-center items-stretch px-4">
-        
-            <a href="story.html" class="card card-blue group w-full md:w-1/2 min-h-[300px] flex flex-col items-center justify-center">
-                <div class="icon-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 text-[#8ECAE6]" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-                    </svg>
-                </div>
-                <span class="text-story text-3xl">Story</span>
-            </a>
-
-            <a href="lost-found.html" class="card card-pink group w-full md:w-1/2 min-h-[300px] flex flex-col items-center justify-center">
-                <div class="icon-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24 text-[#A890A6]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </div>
-                <span class="text-lost-found text-3xl">Lost & Found</span>
-            </a>
-        </div>
+        <a href="lost-found.html" class="card card-pink hover:scale-105 transition-transform duration-300">
+            <div class="icon-container mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-maroon-unhas" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+            <h3 class="text-lost-found text-maroon-unhas text-4xl font-poppins font-semibold">Lost & Found</h3>
+            <p class="mt-2 text-center text-gray-700 max-w-xs font-poppins text-sm">Cari atau posting barang hilang/ditemukan</p>
+        </a>
     </main>
 
-    <script src="js/app.js"></script>
 </body>
 </html>
