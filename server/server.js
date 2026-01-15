@@ -9,6 +9,7 @@ const upload = require('./config/upload');
 const app = express();
 const PORT = 3000;
 const DATA_FILE = path.join(__dirname, 'data', 'database.json');
+const EXPIRE_TIME = 24 * 60 * 60 * 1000;
 
 // === MIDDLEWARE ===
 app.use(cors()); 
@@ -43,22 +44,52 @@ const writeData = (data) => {
 
 // 1. STORY (CONFESS)
 app.get('/api/confess', (req, res) => {
-    const db = readData();
-    res.json(db.confessions.reverse());
+    let db = readData();
+    const now = Date.now();
+    let isDataFixed = false; // Penanda kalau kita memperbaiki data lama
+
+    // 1. CEK & PERBAIKI DATA LAMA (MIGRASI)
+    db.confessions.forEach(item => {
+        if (!item.createdAt) {
+            item.createdAt = now; 
+            isDataFixed = true; 
+        }
+    });
+
+    if (isDataFixed) {
+        writeData(db);
+        console.log("Database update: Menambahkan timestamp ke pesan lama.");
+    }
+
+    // 2. FILTER TAMPILAN (Saring sebelum dikirim)
+    const visibleConfessions = db.confessions.filter(item => {
+        return (now - item.createdAt) < EXPIRE_TIME;
+    });
+
+    // 3. KIRIM HASIL SARINGAN
+    res.json(visibleConfessions.reverse());
 });
 
 app.post('/api/confess', (req, res) => {
     const db = readData();
+    
     const newConfess = {
         id: Date.now(),
         pesan: req.body.pesan,
         sender: req.body.sender || 'Anonim',
         recipient: req.body.recipient || 'Someone',
         color: req.body.color || '#FFF9C4',
-        tanggal: new Date().toLocaleDateString('id-ID')
+        
+        // Tampilan tanggal (untuk dibaca manusia)
+        tanggal: new Date().toLocaleDateString('id-ID'),
+        
+        // WAKTU ASLI (Untuk sistem menghitung umur pesan)
+        createdAt: Date.now() 
     };
+    
     db.confessions.push(newConfess);
     writeData(db);
+    
     res.json({ message: "Curhatan tersimpan!", data: newConfess });
 });
 
