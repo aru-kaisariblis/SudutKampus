@@ -12,28 +12,28 @@
 
         <header id="main-nav" class="fixed top-0 w-full grid grid-cols-3 items-center px-8 py-6 z-50 transition-all duration-500 bg-white/30 backdrop-blur-md">
             <div class="flex justify-start">
-                <a href="index.html" class="text-[#A890A6] hover:scale-110 transition-transform">
+                <a href="index.html" class="text-[#ffa621] hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
                 </a>
             </div>
             <div class="flex justify-center">
-                <h1 class="text-[#A890A6] text-3xl md:text-5xl font-story whitespace-nowrap">lost & found</h1>
+                <h1 class="text-[#ffa621] text-3xl md:text-5xl font-story whitespace-nowrap">lost & found</h1>
             </div>
 
             <!-- search  bar -->
             <div class="flex justify-end relative">
                 <input type="text" id="search-input" placeholder="Search..." 
-                    class="bg-white/50 border-2 border-[#A890A6]/30 rounded-full 
+                    class="bg-white/50 border-2 border-[#ffa621]/30 rounded-full 
                         h-12 w-12 aspect-square focus:aspect-auto focus:w-64 
                         cursor-pointer focus:cursor-text
                         p-0 focus:pl-5 focus:pr-12 transition-all duration-500 ease-in-out
-                        focus:outline-none focus:border-[#A890A6] focus:bg-white
-                        placeholder:text-transparent focus:placeholder:text-[#A890A6]/50 
-                        text-[#A890A6]">
+                        focus:outline-none focus:border-[#ffa621] focus:bg-white
+                        placeholder:text-transparent focus:placeholder:text-[#ffa621]/50 
+                        text-[#ffa621]">
 
-                <div class="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-[#A890A6] pointer-events-none">
+                <div class="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-[#ffa621] pointer-events-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
@@ -90,7 +90,7 @@
                         
                         <h2 id="detail-name" class="text-3xl font-bold text-gray-800 mb-2"></h2>
                         
-                        <p id="detail-location" class="text-[#A890A6] font-semibold mb-2 flex items-center gap-2">
+                        <p id="detail-location" class="text-[#ffa621] font-semibold mb-2 flex items-center gap-2">
                             📍 <span></span>
                         </p>
 
@@ -115,14 +115,14 @@
         <div class="fixed bottom-10 right-10 flex flex-col items-end gap-4 z-50">
         
             <div id="fab-menu" class="flex flex-col items-end gap-3 opacity-0 translate-y-10 pointer-events-none transition-all duration-300 ease-out">
-                <button onclick="openForm('Found')" class="bg-[#F9C7E3] text-[#A890A6] px-6 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
+                <button onclick="openForm('Found')" class="bg-[#fff8ee] text-[#ffa621] px-6 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
                     Found
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
                 </button>
 
-                <button onclick="openForm('Lost')" class="bg-[#F9C7E3] text-[#A890A6] px-6 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
+                <button onclick="openForm('Lost')" class="bg-[#fff8ee] text-[#ffa621] px-6 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2">
                     Lost
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
@@ -130,7 +130,7 @@
                 </button>
             </div>
 
-            <button id="fab-main-btn" class="group w-16 h-16 bg-[#A890A6] text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 active:scale-90 hover:bg-[#8e768c]">
+            <button id="fab-main-btn" class="group w-16 h-16 bg-[#ffa621] text-white rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 active:scale-90 hover:bg-[#df8602]">
                 <svg id="fab-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 transition-transform duration-300">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
@@ -138,7 +138,7 @@
             <div id="input-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center z-[100] p-4">
                 <div class="bg-white w-full max-w-lg rounded-[40px] p-8 shadow-2xl relative">
                     <button onclick="closeForm()" class="absolute top-6 right-8 text-gray-400 text-2xl hover:text-red-500">✕</button>
-                    <h2 id="modal-form-title" class="text-[#A890A6] text-4xl font-story mb-6 italic text-center">Found</h2>
+                    <h2 id="modal-form-title" class="text-[#ffa621] text-4xl font-story mb-6 italic text-center">Found</h2>
                     
                     <form id="lf-post-form">
                         <div class="space-y-4">
