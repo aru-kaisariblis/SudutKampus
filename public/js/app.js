@@ -1,32 +1,29 @@
 
 const API_URL = 'http://localhost:3000/api';
-/* --- LOGIKA HIDE ON SCROLL --- */
+
+/* LOGIKA HIDE ON SCROLL 
+   ---------------------- */
 let lastScrollTop = 0;
 const navbar = document.getElementById('main-nav');
 
 window.addEventListener('scroll', function() {
-    // Ambil posisi scroll saat ini
     let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // Kecepatan scroll minimal sebelum bereaksi (misal: 10px)
     if (Math.abs(lastScrollTop - scrollTop) <= 10) return;
 
     if (scrollTop > lastScrollTop && scrollTop > 50) {
-        // Jika Scroll ke Bawah DAN posisi sudah lewat 50px -> Sembunyikan
         navbar.classList.add('nav-hidden');
     } else {
-        // Jika Scroll ke Atas -> Munculkan Kembali
         navbar.classList.remove('nav-hidden');
     }
-    
-    // Simpan posisi terakhir, pastikan tidak negatif (untuk Safari/iOS)
+
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
-}, { passive: true }); // Menggunakan passive true untuk performa yang lebih baik
+}, { passive: true });
 
-/* INDEX */
+/* INDEX 
+   ---------------------- */
 
-
-/* STORY */
+/* STORY 
+   ---------------------- */
 const addBtn = document.getElementById('add-story-btn');
 const formOverlay = document.getElementById('form-overlay');
 const closeBtn = document.getElementById('close-btn');
@@ -38,7 +35,7 @@ async function loadStories() {
     try {
         const res = await fetch(`${API_URL}/confess`);
         const data = await res.json();
-        const container = document.getElementById('stories-container'); // Pastikan ID ini ada di HTML
+        const container = document.getElementById('stories-container');
         
         if(container) {
             container.innerHTML = ''; // Reset container
@@ -46,9 +43,9 @@ async function loadStories() {
             
             data.forEach(item => {
                 const randomRot = rotations[Math.floor(Math.random() * rotations.length)];
-                const bgColor = item.color || '#FFF9C4'; // Default kuning
+                const bgColor = item.color || '#FFF9C4';
 
-                // Kita inject HTML sesuai desain temanmu
+                // inject html
                 const html = `
                     <div class="memo p-6 shadow-md rounded-sm transition-transform hover:scale-105 ${randomRot} flex flex-col justify-between min-h-[200px]" style="background-color: ${bgColor};">
                         <div>
@@ -67,7 +64,7 @@ async function loadStories() {
 }
 
 // 2. Submit Story Baru
-const storyForm = document.getElementById('story-form'); // Pastikan ID form di HTML 'story-form'
+const storyForm = document.getElementById('story-form');
 if(storyForm) {
     storyForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -86,37 +83,33 @@ if(storyForm) {
 
         alert("Berhasil curhat!");
         e.target.reset();
-        document.getElementById('form-overlay').classList.add('hidden'); // Tutup modal pakai ID temanmu
+        document.getElementById('form-overlay').classList.add('hidden');
         loadStories(); // Refresh data
     });
 }
 
-// Panggil saat web dibuka
 loadStories();
 
-// Buka Modal
 if (addBtn && formOverlay) {
     addBtn.addEventListener('click', () => {
         formOverlay.classList.remove('hidden');
     });
 
-// Tutup Modal
     closeBtn.addEventListener('click', () => {
         formOverlay.classList.add('hidden');
     });
 
-// Tutup Modal jika klik area hitam di luar form
     formOverlay.addEventListener('click', (e) => {
         if (e.target === formOverlay) formOverlay.classList.add('hidden');
     });
 }
 
-/* LOST & FOUND */
+/* LOST & FOUND
+   ---------------------- */
 function filterItems(category) {
     const cards = document.querySelectorAll('.item-card');
     const buttons = document.querySelectorAll('.filter-btn');
 
-    // Update tampilan tombol aktif
     buttons.forEach(btn => {
         if (btn.innerText.toLowerCase() === category) {
             btn.classList.add('active');
@@ -125,7 +118,7 @@ function filterItems(category) {
         }
     });
 
-    // Logika Filter
+    //Filter
     cards.forEach(card => {
         if (category === 'all') {
             card.style.display = 'flex';
@@ -139,57 +132,7 @@ function filterItems(category) {
     });
 }
 
-/*detail post*/
-const detailModal = document.getElementById('detail-modal');
-const closeDetail = document.getElementById('close-detail');
-
-// Fungsi untuk membuka detail
-function openDetail(card) {
-    const name = card.querySelector('p').innerText;
-    // Mengambil lokasi
-    const location = card.querySelector('span.text-sm').innerText;
-    // MENGAMBIL WAKTU (Cari span yang ada di dalam div bawah)
-    const time = card.querySelector('.font-mono')?.innerText || "Waktu tidak tersedia";
-    
-    const status = card.classList.contains('found') ? 'Found' : 'Lost';
-    const statusBg = card.classList.contains('found') ? '#4ade80' : '#f87171';
-    
-    // Sinkronisasi Data ke Modal
-    document.getElementById('detail-name').innerText = name;
-    document.getElementById('detail-location').querySelector('span').innerText = location;
-    
-    // MASUKKAN WAKTU KE MODAL
-    document.getElementById('detail-time').querySelector('span').innerText = time;
-    
-    document.getElementById('detail-status').innerText = status;
-    document.getElementById('detail-status').style.backgroundColor = statusBg;
-    
-    document.getElementById('detail-desc').innerText = "Kontak & Detail: Silakan cek informasi yang tertera di sini. " + (status === 'Lost' ? "Bagi yang menemukan hubungi nomor di atas." : "Bagi pemilik sah silakan hubungi nomor di atas.");
-    
-    document.getElementById('detail-img').src = "https://via.placeholder.com/400"; 
-
-    detailModal.classList.remove('hidden');
-}
-
-// Tambahkan event listener ke semua kartu yang ada
-document.addEventListener('click', (e) => {
-    const card = e.target.closest('.item-card');
-    if (card) {
-        openDetail(card);
-    }
-});
-
-// Tutup modal
-if (closeDetail) {
-    closeDetail.addEventListener('click', () => detailModal.classList.add('hidden'));
-}
-
-detailModal.addEventListener('click', (e) => {
-    if (e.target === detailModal) detailModal.classList.add('hidden');
-});
-
 /* --- SUBMIT FORM LOST & FOUND --- */
-// Pastikan form di dalam modal input punya ID="item-form"
 const itemForm = document.getElementById('item-form'); 
 
 if(itemForm) {
@@ -198,14 +141,12 @@ if(itemForm) {
 
         // Siapkan FormData (karena ada upload foto)
         const formData = new FormData(itemForm);
-        
-        // Cek tipe (Lost/Found) dari judul modal yang diset temanmu
+
         const typeTitle = document.getElementById('modal-form-title').innerText;
         // Map "Lost" -> "HILANG", "Found" -> "DITEMUKAN"
         const statusValue = (typeTitle === 'Lost') ? 'HILANG' : 'DITEMUKAN';
         
         formData.append('status', statusValue); 
-        // Pastikan di HTML input name="nama", name="kontak", name="foto_barang" sudah benar
 
         try {
             await fetch(`${API_URL}/items`, {
@@ -224,16 +165,16 @@ if(itemForm) {
     });
 }
 
-/*searching logic*/
+//Search
 const searchInput = document.getElementById('search-input');
 
 if (searchInput) {
     searchInput.addEventListener('input', (e) => {
-        const keyword = e.target.value.toLowerCase(); // Ambil teks input
-        const cards = document.querySelectorAll('.item-card'); // Ambil semua kartu mading
+        const keyword = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('.item-card');
 
         cards.forEach(card => {
-            const itemName = card.querySelector('p').innerText.toLowerCase(); // Ambil nama barang di kartu
+            const itemName = card.querySelector('p').innerText.toLowerCase();
             
             // Jika nama barang cocok dengan kata kunci, tampilkan. Jika tidak, sembunyikan.
             if (itemName.includes(keyword)) {
@@ -244,26 +185,24 @@ if (searchInput) {
         });
     });
 }
-/*+add button logic*/
-/* --- FAB & INPUT MODAL LOGIC --- */
+
+
+//ADD button
 const mainBtn = document.getElementById('fab-main-btn');
 const fabMenu = document.getElementById('fab-menu');
 const fabOverlay = document.getElementById('fab-overlay');
 const fabIcon = document.getElementById('fab-icon');
 const inputModal = document.getElementById('input-modal');
-const mainNav = document.getElementById('main-nav'); // Ambil elemen navbar
+const mainNav = document.getElementById('main-nav');
 
-// Fungsi menutup FAB
 function closeFab() {
     fabMenu.classList.remove('menu-visible');
     fabOverlay.classList.remove('overlay-visible');
     fabIcon.style.transform = 'rotate(0deg)';
-    
-    // HAPUS efek blur pada navbar saat menu tutup
+
     mainNav.style.filter = 'none'; 
 }
 
-// Klik tombol +
 mainBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
     const isOpen = fabMenu.classList.contains('menu-visible');
@@ -271,18 +210,15 @@ mainBtn?.addEventListener('click', (e) => {
         fabMenu.classList.add('menu-visible');
         fabOverlay.classList.add('overlay-visible');
         fabIcon.style.transform = 'rotate(45deg)';
-        
-        // TAMBAHKAN efek blur pada navbar saat menu terbuka
+
         mainNav.style.filter = 'blur(5px)'; 
     } else {
         closeFab();
     }
 });
 
-// Fungsi Membuka Form (Dipanggil dari atribut onclick di HTML)
+// Buka form 
 function openForm(type) {
-    // Jika ingin navbar tetap blur saat form dibuka, biarkan saja.
-    // Jika ingin navbar normal kembali saat form terbuka, tambahkan line ini:
     mainNav.style.filter = 'none'; 
 
     closeFab(); 
@@ -293,18 +229,15 @@ function openForm(type) {
     inputModal.classList.remove('hidden');
 }
 
-// Pastikan di closeForm juga navbar kembali normal
 function closeForm() {
     inputModal.classList.add('hidden');
-    mainNav.style.filter = 'none'; // Kembalikan navbar ke kondisi normal
+    mainNav.style.filter = 'none';
 }
 
-// Tutup modal jika klik di area blur (luar form)
 inputModal.addEventListener('click', (e) => {
     if (e.target === inputModal) closeForm();
 });
 
-// Pastikan overlay FAB juga bisa menutup FAB
 fabOverlay?.addEventListener('click', closeFab);
 
 /* --- INTEGRASI BACKEND LOST & FOUND --- */
@@ -313,21 +246,21 @@ async function loadItems() {
     try {
         const res = await fetch(`${API_URL}/items`);
         const data = await res.json();
-        const container = document.getElementById('lost-found-container'); // Pastikan ID ini ada di HTML Grid kamu
+        const container = document.getElementById('lost-found-container');
 
         if(container) {
             container.innerHTML = ''; // Bersihkan dummy
 
             data.forEach(item => {
-                // Tentukan class 'lost' atau 'found' biar Filter temanmu jalan
+                // Tentukan class 'lost' atau 'found'
                 const categoryClass = item.status === 'HILANG' ? 'lost' : 'found';
                 const statusColor = item.status === 'HILANG' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600';
                 
                 // Gunakan foto dari server atau placeholder
                 const imgUrl = item.foto ? `http://localhost:3000${item.foto}` : 'https://via.placeholder.com/150';
 
-                // Render HTML Card (Struktur disesuaikan biar fungsi openDetail temanmu jalan)
-                // Perhatikan: Kita simpan data kontak di atribut 'data-contact' biar gampang diambil
+                // Render HTML Card
+                // Perhatikan: simpan data kontak di atribut 'data-contact' biar gampang diambil
                 const html = `
                     <div class="item-card ${categoryClass} bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex flex-col gap-3"
                          onclick="openDetailBackend(this)" 
@@ -356,53 +289,82 @@ async function loadItems() {
     } catch (err) { console.error("Gagal load items:", err); }
 }
 
-// Kita buat fungsi Open Detail versi Upgrade (Biar datanya akurat dari backend)
-// Fungsi ini akan menimpa logika openDetail temanmu yang mengandalkan innerText
-function openDetailBackend(card) {
-    const modal = document.getElementById('detail-modal');
-    
-    // Ambil data dari atribut data- yang kita tempel di atas
-    const name = card.getAttribute('data-name');
-    const status = card.getAttribute('data-status');
-    const contact = card.getAttribute('data-contact');
-    const img = card.getAttribute('data-img');
-    const date = card.getAttribute('data-date');
+//Detail post
+const detailModal = document.getElementById('detail-modal');
+const closeDetail = document.getElementById('close-detail');
 
-    // Isi ke Modal
-    document.getElementById('detail-name').innerText = name;
-    document.getElementById('detail-status').innerText = status;
-    document.getElementById('detail-status').style.backgroundColor = status === 'HILANG' ? '#f87171' : '#4ade80';
-    document.getElementById('detail-img').src = img;
-    
-    // Deskripsi lebih lengkap
-    const descText = status === 'HILANG' 
-        ? `Barang ini hilang pada tanggal ${date}. Jika menemukan, tolong hubungi:` 
-        : `Barang ini ditemukan pada tanggal ${date}. Pemilik bisa menghubungi:`;
-    
-    document.getElementById('detail-desc').innerHTML = `
-        <p>${descText}</p>
-        <p class="mt-2 font-bold text-xl text-blue-600">📞 ${contact}</p>
-    `;
+function openDetail(card) {
+    if (!detailModal) return;
 
-    modal.classList.remove('hidden');
+    const backendName = card.getAttribute('data-name');
+
+    if (backendName) {
+        const status = card.getAttribute('data-status');
+        const contact = card.getAttribute('data-contact');
+        const img = card.getAttribute('data-img');
+        const date = card.getAttribute('data-date');
+
+        document.getElementById('detail-name').innerText = backendName;
+        document.getElementById('detail-status').innerText = status;
+        document.getElementById('detail-status').style.backgroundColor = (status === 'HILANG' || status === 'Lost') ? '#f87171' : '#4ade80';
+        document.getElementById('detail-img').src = img || "https://via.placeholder.com/400";
+        
+        const descText = (status === 'HILANG' || status === 'Lost') 
+            ? `Barang ini hilang pada tanggal ${date}. Jika menemukan, tolong hubungi:` 
+            : `Barang ini ditemukan pada tanggal ${date}. Pemilik bisa menghubungi:`;
+        
+        document.getElementById('detail-desc').innerHTML = `
+            <p>${descText}</p>
+            <p class="mt-2 font-bold text-xl text-blue-600">📞 ${contact}</p>
+        `;
+    } else {
+        const name = card.querySelector('p').innerText;
+        const location = card.querySelector('span.text-sm').innerText;
+        const time = card.querySelector('.font-mono')?.innerText || "Waktu tidak tersedia";
+        const status = card.classList.contains('found') ? 'Found' : 'Lost';
+
+        document.getElementById('detail-name').innerText = name;
+        document.getElementById('detail-location').querySelector('span').innerText = location;
+        document.getElementById('detail-time').querySelector('span').innerText = time;
+        document.getElementById('detail-status').innerText = status;
+        document.getElementById('detail-status').style.backgroundColor = status === 'Found' ? '#4ade80' : '#f87171';
+        document.getElementById('detail-img').src = "https://via.placeholder.com/400"; 
+        
+        document.getElementById('detail-desc').innerText = "Kontak & Detail: Silakan cek informasi yang tertera di sini. " + 
+            (status === 'Lost' ? "Bagi yang menemukan hubungi pengunggah." : "Bagi pemilik sah silakan hubungi pengunggah.");
+    }
+
+    detailModal.classList.remove('hidden');
 }
 
-// Panggil loadItems saat web dibuka
-loadItems();
+// Global Listener untuk kartu
+document.addEventListener('click', (e) => {
+    const card = e.target.closest('.item-card');
+    if (card) {
+        openDetail(card);
+    }
+});
 
-/*waktu post
-/* --- LOGIKA POSTING & TIMESTAMP --- */
+if (closeDetail) {
+    closeDetail.addEventListener('click', () => detailModal.classList.add('hidden'));
+}
+
+if (detailModal) {
+    detailModal.addEventListener('click', (e) => {
+        if (e.target === detailModal) detailModal.classList.add('hidden');
+    });
+}
+
+//Waktu postingan
 const lfPostForm = document.getElementById('lf-post-form');
 
 lfPostForm?.addEventListener('submit', (e) => {
     e.preventDefault(); 
 
-    // Ambil input berdasarkan ID yang baru kita tambahkan di HTML
     const itemName = document.getElementById('input-item-name').value;
     const itemLocation = document.getElementById('input-item-location').value;
     const itemType = document.getElementById('modal-form-title').innerText; 
-    
-    // Buat waktu sekarang
+
     const now = new Date();
     const timeString = now.toLocaleDateString('id-ID', { 
         day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' 
@@ -417,7 +379,6 @@ lfPostForm?.addEventListener('submit', (e) => {
     newCard.className = `item-card bg-white ${itemType.toLowerCase()} flex flex-col`;
     newCard.style.transform = `rotate(${randomRotation}deg)`;
 
-    // Template kartu yang memiliki Timestamp
     newCard.innerHTML = `
         <div class="status-tag ${statusColor} text-white">${itemType}</div>
         <p class="text-xl font-semibold">${itemName}</p>
@@ -427,7 +388,7 @@ lfPostForm?.addEventListener('submit', (e) => {
         </div>
     `;
 
-    grid.prepend(newCard); // Tambahkan ke mading
-    closeForm();           // Tutup modal
-    lfPostForm.reset();    // Kosongkan form
+    grid.prepend(newCard);
+    closeForm();
+    lfPostForm.reset();
 });
