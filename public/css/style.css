@@ -1,7 +1,6 @@
 /* Definisi Warna dan Font */
     :root {
         --maroon-unhas: #800000;
-        --bg-black: #494949;
         --bg-yellow: #FFF9C4;
         --bg-blue: #E0F2FE;
         --bg-grey: #efefef;
@@ -18,95 +17,59 @@
 }
 /*INDEX
 
-/* Gradasi Background Utama */
-.main-gradient {
-    background: linear-gradient(to bottom, var(--bg-yellow), var(--bg-blue));
-    background-attachment: fixed;
-    min-height: 100vh;
+/* Custom Animations */
+@keyframes bounce-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
 }
 
-/* Font Kustom */
-.font-poppins {
+.animate-bounce-slow {
+    animation: bounce-slow 4s ease-in-out infinite;
+}
+
+/* Reset dan Tipografi */
+/* Warna dasar untuk seluruh halaman (bagian bawah) */
+body {
+    background-color: #FDFCE5; /* Warna krem sesuai gambar bagian bawah */
+    margin: 0;
+    padding: 0;
+}
+
+/* Area kuning cerah untuk bagian atas (Hero Section) */
+.hero-bg {
+    background-color: #FAFF70; /* Warna kuning cerah sesuai gambar */
+    width: 100%;
+    border-bottom-left-radius: 0; /* Opsional: bisa dibuat melengkung jika mau */
+    border-bottom-right-radius: 0;
+}
+
+/* Bayangan Halus untuk Kartu */
+.shadow-lg {
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+}
+
+/* Penyesuaian Font untuk Judul */
+h1 {
     font-family: 'Poppins', sans-serif;
+    letter-spacing: -1px;
 }
 
-/* Gaya Logo U-Board */
-.logo-u-board {
-    font-family: 'intro rust', sans-serif; 
-    font-size: 5rem; /* Ukuran default */
+/* Logo u-board */
+.brand-font {
+    font-family: 'Fredoka', sans-serif;
     font-weight: 700;
-    color: var(--maroon-unhas);
-    opacity: 0.9;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
 }
 
-@media (min-width: 768px) { /* Untuk layar MD ke atas */
-    .logo-u-board {
-        font-size: 8rem;
+/* Responsivitas Kartu */
+@media (max-width: 768px) {
+    .puzzle-card {
+        width: 100%;
     }
 }
-
-
-/* Desain Kartu Utama */
-.card {
-    width: 320px; /* Ukuran tetap untuk card */
-    height: 320px;
-    border-radius: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 3px solid rgba(255, 255, 255, 0.5); /* Border agar terlihat lebih solid */
-    text-decoration: none; /* Hilangkan garis bawah link */
-}
-
-.card:hover {
-    transform: scale(1.07);
-    box-shadow: 0 18px 35px rgba(0,0,0,0.18);
-}
-
-.card-blue { background-color: var(--card-blue); }
-.card-pink { background-color: var(--card-pink); }
-
-.card .icon-container svg {
-    color: var(--bg-black);
-}
-
-.card h3 {
-    color: var(--bg-black);
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.card p {
-    color: #4a4a4a;
-}
-
-/* Kepingan Puzzle */
-.puzzle-piece {
-    position: absolute;
-    width: 100px; /* Ukuran kepingan puzzle */
-    height: 100px;
-    background-color: #d1d5db; /* Warna abu-abu default, akan di-override oleh Tailwind */
-    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 0c-11.046 0-20 8.954-20 20v10h-10c-11.046 0-20 8.954-20 20s8.954 20 20 20h10v10c0 11.046 8.954 20 20 20s20-8.954 20-20v-10h10c11.046 0 20-8.954 20-20s-8.954-20-20-20h-10v-10c0-11.046-8.954-20-20-20z"/></svg>');
-    mask-repeat: no-repeat;
-    mask-size: cover;
-    opacity: 0.6; /* Sedikit transparan */
-    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1)); /* Sedikit bayangan */
-    z-index: 0; /* Pastikan di belakang konten utama */
-}
-
-/* Jika Anda ingin menggunakan gambar SVG langsung sebagai background: */
-/*
-.puzzle-piece {
-    background-image: url('path/to/your/puzzle-piece.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-*/
-
+/* about */
+.brand-font { font-family: 'Fredoka', sans-serif; }
+        body { background-color: #FDFCE5; font-family: 'Poppins', sans-serif; }
+        
 /*STORY*/
     /* Gaya Kertas Sticky Note */
     /* Gradasi Background */
@@ -157,7 +120,7 @@
 /*LOST N FOUND*/
     /* Gradasi Radial Pink di Tengah */
 .lf-gradient {
-    background: radial-gradient(circle at center, #F9C7E3 0%, #F9C7E3 30%, #E0F2FE 100%);
+    background: radial-gradient(circle at center,#ffe1b6 0%,#ffe1b6 20%, #fffecd 70%);
     background-attachment: fixed;
 }
 
@@ -166,14 +129,14 @@
     padding: 10px 25px;
     border-radius: 20px;
     background: white;
-    color: #A890A6;
+    color: #ffa621;
     font-weight: bold;
     transition: all 0.3s;
     border: 2px solid transparent;
 }
 
 .filter-btn.active {
-    background: #A890A6;
+    background: #ffa621;
     color: white;
 }
 

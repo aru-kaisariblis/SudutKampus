@@ -233,12 +233,16 @@ const fabMenu = document.getElementById('fab-menu');
 const fabOverlay = document.getElementById('fab-overlay');
 const fabIcon = document.getElementById('fab-icon');
 const inputModal = document.getElementById('input-modal');
+const mainNav = document.getElementById('main-nav'); // Ambil elemen navbar
 
 // Fungsi menutup FAB
 function closeFab() {
     fabMenu.classList.remove('menu-visible');
     fabOverlay.classList.remove('overlay-visible');
     fabIcon.style.transform = 'rotate(0deg)';
+    
+    // HAPUS efek blur pada navbar saat menu tutup
+    mainNav.style.filter = 'none'; 
 }
 
 // Klik tombol +
@@ -249,6 +253,9 @@ mainBtn?.addEventListener('click', (e) => {
         fabMenu.classList.add('menu-visible');
         fabOverlay.classList.add('overlay-visible');
         fabIcon.style.transform = 'rotate(45deg)';
+        
+        // TAMBAHKAN efek blur pada navbar saat menu terbuka
+        mainNav.style.filter = 'blur(5px)'; 
     } else {
         closeFab();
     }
@@ -256,21 +263,22 @@ mainBtn?.addEventListener('click', (e) => {
 
 // Fungsi Membuka Form (Dipanggil dari atribut onclick di HTML)
 function openForm(type) {
-    closeFab(); // Tutup menu FAB dulu
-    
+    // Jika ingin navbar tetap blur saat form dibuka, biarkan saja.
+    // Jika ingin navbar normal kembali saat form terbuka, tambahkan line ini:
+    mainNav.style.filter = 'none'; 
+
+    closeFab(); 
     const title = document.getElementById('modal-form-title');
     const btn = document.getElementById('submit-btn');
-    
     title.innerText = type;
-    // Set warna tombol Posting sesuai tipe
     btn.style.backgroundColor = (type === 'Lost') ? '#f87171' : '#66BB6A';
-    
     inputModal.classList.remove('hidden');
 }
 
-// Fungsi Menutup Form
+// Pastikan di closeForm juga navbar kembali normal
 function closeForm() {
     inputModal.classList.add('hidden');
+    mainNav.style.filter = 'none'; // Kembalikan navbar ke kondisi normal
 }
 
 // Tutup modal jika klik di area blur (luar form)

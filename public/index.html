@@ -1,51 +1,79 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>U-Board | Mading Digital Unhas</title>
+    <title>SudutKampus | Mading Digital Unhas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="main-gradient min-h-screen flex flex-col items-center justify-center">
-<div></div>
-    <div class="puzzle-piece top-[10%] left-[5%] rotate-[-20deg] bg-red-400"></div>
-    <div class="puzzle-piece top-[25%] left-[85%] rotate-[30deg] bg-yellow-400"></div>
-    <div class="puzzle-piece top-[60%] left-[10%] rotate-[10deg] bg-blue-400"></div>
-    <div class="puzzle-piece top-[75%] left-[70%] rotate-[-40deg] bg-green-400"></div>
-    <div class="puzzle-piece top-[40%] left-[20%] rotate-[15deg] bg-purple-400"></div>
-    <div class="puzzle-piece top-[5%] left-[70%] rotate-[-50deg] bg-gray-400"></div>
-    <div class="puzzle-piece top-[90%] left-[50%] rotate-[25deg] bg-pink-400"></div>
-    <div class="puzzle-piece top-[45%] left-[5%] rotate-[-10deg] bg-orange-400"></div>
+<body class="bg-[#FDFCE5] font-poppins">
+
+<header class="bg-[#FDFCE5]">
+    <nav class="flex justify-between items-center px-10 py-2">
+        <a href="index.html" class="text-[#9f4e1b] brand-font text-3xl tracking-tight hover:opacity-80 transition-opacity">SudutKampus</a>
+        <div class="flex gap-10 text-xl font-bold text-gray-900">
+            <a href="about.html" class="hover:opacity-70 transition-opacity">About</a>
+            <a href="#" class="hover:opacity-70 transition-opacity">Contact us</a>
+        </div>
+    </nav>
+</header>
+<div class="hero-bg rounded-[50px] w-[calc(100%-40px)] mx-auto mt-1 shadow-sm"> 
+    <div class="flex flex-col md:flex-row items-center justify-between px-10 py-16 max-w-7xl mx-auto">
+        <div class="w-full md:w-1/2 flex justify-center">
+            <img src="img/baloon.png" alt="Hero Illustration" class="w-72 h-auto animate-bounce-slow">
+        </div>
+        
+        <div class="w-full md:w-1/2 text-center md:text-right mt-10 md:mt-0">
+            <h1 class="text-6xl md:text-7xl font-bold text-[#000033] leading-[1.1] mb-6">
+                Every Corner<br>Has a Tale
+            </h1>
+            <p class="text-gray-800 text-xl font-medium leading-relaxed max-w-lg ml-auto">
+                Selalu ada cerita di setiap sudut Unhas. Bagikan perasaanmu, temukan barangmu, dan hargai setiap momen di kampus kita.
+            </p>
+        </div>
+    </div>
 </div>
 
-    <header class="text-center mb-12 relative z-10">
-        <h1 class="logo-u-board text-6xl md:text-8xl font-extrabold text-maroon-unhas tracking-tight">U-BOARD</h1>
-        <h2 class="text-maroon-unhas text-3xl md:text-4xl font-semibold mt-4">MADING DIGITAL UNHAS</h2>
-    </header>
+    <div class="text-center my-8">
+        <h2 class="text-3xl md:text-4xl font-bold text-[#9f4e1b]">Punya kisah menarik?</h2>
+    </div>
 
-    <main class="flex flex-col md:flex-row gap-8 relative z-10">
-        <a href="story.html" class="card card-blue hover:scale-105 transition-transform duration-300">
-            <div class="icon-container mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-maroon-unhas" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+    <main class="flex flex-col md:flex-row justify-center items-center gap-6 px-8 pb-20">
+        <a href="story.html" class="w-full max-w-sm bg-[#C3E2FF] rounded-3xl p-8 shadow-lg transition-all hover:scale-105 hover:shadow-2xl flex flex-col items-center text-center group">
+            <div class="mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-black-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
             </div>
-            <h3 class="text-story text-maroon-unhas text-4xl font-poppin">Story</h3>
-            <p class="mt-2 text-center text-gray-700 max-w-xs font-poppins text-sm">Sampaikan keluh kesah atau apresiasi di sini!</p>
+            <h3 class="text-4xl font-story text-gray-800 mb-2">Story</h3>
+            <p class="text-[#3d3d3d]-600 text-sm">Sampaikan hari mu disini</p>
         </a>
 
-        <a href="lost-found.html" class="card card-pink hover:scale-105 transition-transform duration-300">
-            <div class="icon-container mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-maroon-unhas" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <a href="lost-found.html" class="w-full max-w-sm bg-[#ffc164] rounded-3xl p-8 shadow-lg transition-all hover:scale-105 hover:shadow-2xl flex flex-col items-center text-center group">
+            <div class="mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-black-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <circle cx="11" cy="11" r="8" stroke-width="2"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"/>
                 </svg>
             </div>
-            <h3 class="text-lost-found text-maroon-unhas text-4xl font-poppins font-semibold">Lost & Found</h3>
-            <p class="mt-2 text-center text-gray-700 max-w-xs font-poppins text-sm">Cari atau posting barang hilang/ditemukan</p>
+            <h3 class="text-4xl font-story text-gray-800 mb-2 font-poppins">Lost & found</h3>
+            <p class="text-[#3d3d3d]-600 text-sm">Cari atau temukan barang</p>
         </a>
     </main>
+
+    <footer class="bg-transparent border-t border-gray-200 py-16 px-16">
+        <div class="w-full mx-auto flex flex-col md:flex-row justify-between items-start gap-8"> <a href="index.html" class="text-[#9f4e1b] brand-font text-3xl tracking-tight">SudutKampus</a>
+            <div class="flex flex-col gap-2">
+                <a href="about.html" class="text-sm font-bold text-gray-800 hover:underline">About</a>
+                <a href="#" class="text-sm font-bold text-gray-800 hover:underline">Contact us</a>
+            </div>
+        </div>
+        <div class="text-center mt-12 text-sm text-gray-600">
+            @made by X for GDGOC
+        </div>
+    </footer>
 
 </body>
 </html>
