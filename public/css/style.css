@@ -1,23 +1,56 @@
-/* Definisi Warna dan Font */
-    :root {
-        --maroon-unhas: #800000;
-        --bg-yellow: #FFF9C4;
-        --bg-blue: #E0F2FE;
-        --bg-grey: #efefef;
-        --card-blue: #C3E2FF;
-        --card-pink: #F9C7E3;
-    }
+/* 1. DEFINISI VARIABEL & GLOBAL
+   ------------------------------ */
+:root {
+    --maroon-unhas: #800000;
+    --bg-yellow: #FFF9C4;
+    --bg-blue: #E0F2FE;
+    --bg-grey: #efefef;
+    --card-blue: #C3E2FF;
+    --card-pink: #F9C7E3;
+    --main-cream: #FDFCE5;
+    --hero-yellow: #FAFF70;
+}
 
-/* Transisi untuk Script Scroll 
-    /* Class ini akan dipasang oleh JavaScript saat user scroll ke bawah */
+body {
+    background-color: var(--main-cream);
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* Tipografi */
+h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+
+.brand-font {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+}
+
+.font-story {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+/* 2. NAVBAR & LOGIKA JS (Hide on Scroll)
+   -------------------------------------- */
+#main-nav {
+    transition: all 0.5s ease-in-out;
+}
+
+/* Class ini dipasang oleh JavaScript */
 .nav-hidden {
     transform: translateY(-100%);
     opacity: 0;
     pointer-events: none;
 }
-/*INDEX
 
-/* Custom Animations */
+/* 3. HERO & ANIMASI (Index)
+   ------------------------------ */
+.hero-bg {
+    background-color: var(--hero-yellow);
+}
+
 @keyframes bounce-slow {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-20px); }
@@ -27,104 +60,57 @@
     animation: bounce-slow 4s ease-in-out infinite;
 }
 
-/* Reset dan Tipografi */
-/* Warna dasar untuk seluruh halaman (bagian bawah) */
-body {
-    background-color: #FDFCE5; /* Warna krem sesuai gambar bagian bawah */
-    margin: 0;
-    padding: 0;
-}
-
-/* Area kuning cerah untuk bagian atas (Hero Section) */
-.hero-bg {
-    background-color: #FAFF70; /* Warna kuning cerah sesuai gambar */
-    width: 100%;
-    border-bottom-left-radius: 0; /* Opsional: bisa dibuat melengkung jika mau */
-    border-bottom-right-radius: 0;
-}
-
-/* Bayangan Halus untuk Kartu */
 .shadow-lg {
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
 }
 
-/* Penyesuaian Font untuk Judul */
-h1 {
-    font-family: 'Poppins', sans-serif;
-    letter-spacing: -1px;
-}
-
-/* Logo u-board */
-.brand-font {
-    font-family: 'Fredoka', sans-serif;
-    font-weight: 700;
-}
-
-/* Responsivitas Kartu */
-@media (max-width: 768px) {
-    .puzzle-card {
-        width: 100%;
-    }
-}
-/* about */
-.brand-font { font-family: 'Fredoka', sans-serif; }
-        body { background-color: #FDFCE5; font-family: 'Poppins', sans-serif; }
-        
-/*STORY*/
-    /* Gaya Kertas Sticky Note */
-    /* Gradasi Background */
-    .story-gradient {
-        background: radial-gradient(circle at center, var(--bg-blue)0%, var(--bg-blue) 50%, var(--bg-grey) 100%);
-        background-attachment: fixed;
-        min-height: 100vh;
-    }
-
-    /* Font Khusus Judul */
-    .font-story {
-        font-family: 'Playfair Display', serif;
-        font-style: italic;
-    }
-
-    /* Gaya Memo/Sticky Note */
-    .memo {
-        border-radius: 20px;
-        padding: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        cursor: pointer;
-    }
-
-    .memo:hover {
-        transform: scale(1.05) rotate(0deg) !important;
-        z-index: 10;
-    }
-
-    .memo p {
-        color: #4a4a4a;
-        font-size: 1.25rem;
-        font-weight: 600;
-        text-align: center;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .bar-story {
-        width: 35px;
-        height: 5px;
-        background-color: #0056b3;
-        border-radius: 10px;
-    }
-
-/*LOST N FOUND*/
-    /* Gradasi Radial Pink di Tengah */
-.lf-gradient {
-    background: radial-gradient(circle at center,#ffe1b6 0%,#ffe1b6 20%, #fffecd 70%);
+/* 4. STORY PAGE (Mading Confess)
+   ------------------------------ */
+.story-gradient {
+    background: radial-gradient(circle at center, var(--bg-blue) 0%, var(--bg-blue) 50%, var(--bg-grey) 100%);
     background-attachment: fixed;
 }
 
-/* Tombol Filter */
+/* Grid Container Mading */
+#stories-container, #items-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Elemen Memo */
+.memo {
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-height: 150px;
+}
+
+.memo:hover {
+    transform: scale(1.05) rotate(0deg) !important;
+    z-index: 10;
+}
+
+.memo p {
+    color: #4a4a4a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* 5. LOST & FOUND PAGE
+   --------------------- */
+.lf-gradient {
+    background: radial-gradient(circle at center, #ffe1b6 0%, #ffe1b6 20%, #fffecd 70%);
+    background-attachment: fixed;
+}
+
+/* Filter Buttons */
 .filter-btn {
     padding: 10px 25px;
     border-radius: 20px;
@@ -149,11 +135,13 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    transition: transform 0.3s;
+    transition: all 0.3s ease;
+    background: white;
 }
 
 .item-card:hover {
     transform: scale(1.05) rotate(0deg) !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
 .status-tag {
@@ -165,21 +153,44 @@ h1 {
     text-transform: uppercase;
 }
 
-/* Pastikan tombol utama selalu bisa diklik */
-#fab-main-btn {
-    cursor: pointer !important;
-    position: relative;
-}
+/* 6. FAB (Floating Button) & MODAL SYSTEM
+   ---------------------------------------- */
 
-/* Munculkan menu */
+/* State Visibilitas untuk JS */
 .menu-visible {
     opacity: 1 !important;
     transform: translateY(0) !important;
-    pointer-events: auto !important; /* Sangat Penting */
+    pointer-events: auto !important;
 }
 
-/* Munculkan overlay */
 .overlay-visible {
     opacity: 1 !important;
-    pointer-events: auto !important; /* Sangat Penting */
+    pointer-events: auto !important;
+}
+
+/* Pastikan Modal Overlay menutup seluruh layar */
+#form-overlay, #detail-modal, #input-modal {
+    z-index: 100;
+}
+
+/* Hover effect untuk icon FAB */
+#fab-main-btn:hover #fab-icon {
+    transform: scale(1.1);
+}
+
+/* Rotasi random untuk kartu (bisa ditambahkan lewat JS atau manual) */
+.rotate-1 { transform: rotate(1deg); }
+.rotate-2 { transform: rotate(2deg); }
+.-rotate-1 { transform: rotate(-1deg); }
+.-rotate-2 { transform: rotate(-2deg); }
+
+/* 7. FOOTER & RESPONSIVE
+   ----------------------- */
+footer {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #main-nav h1 { font-size: 1.75rem; }
+    .hero-bg { width: calc(100% - 20px); }
 }
