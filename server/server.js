@@ -175,5 +175,5 @@ app.listen(PORT, () => {
     if (!fs.existsSync(uploadDir)){
         fs.mkdirSync(uploadDir);
     }
-    console.log(`Server U-Board jalan di http://localhost:${PORT}`);
+    console.log(`Server SudutKampus jalan di http://localhost:${PORT}`);
 });
