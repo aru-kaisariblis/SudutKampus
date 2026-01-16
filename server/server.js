@@ -95,10 +95,11 @@ app.post('/api/confess', (req, res) => {
 
 // 2. ITEMS (LOST & FOUND)
 
-// [FIX 1] Menambahkan Route GET yang tadi hilang
 app.get('/api/items', (req, res) => {
     const db = readData();
-    res.json(db.items.reverse());
+    // Hanya ambil item yang isResolved-nya false (atau undefined buat data lama)
+    const activeItems = db.items.filter(item => !item.isResolved);
+    res.json(activeItems.reverse());
 });
 
 // [FIX 2] Menambahkan Console Log di Route POST untuk Debugging
@@ -123,6 +124,10 @@ app.post('/api/items', upload.single('foto_barang'), (req, res) => {
         lokasi: req.body.lokasi || '-',      
         deskripsi: req.body.deskripsi || '-', 
 
+        password: req.body.password, // Password tersimpan di sini
+        isResolved: false,           // Penanda apakah barang sudah ketemu/selesai
+    
+
         foto: fotoPath,
         tanggal: new Date().toLocaleDateString('id-ID', {
             day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
@@ -134,6 +139,34 @@ app.post('/api/items', upload.single('foto_barang'), (req, res) => {
     
     console.log("Data berhasil disimpan:", newItem); // Cek hasil akhir yang disimpan
     res.json({ message: "Barang berhasil diposting!", data: newItem });
+
+    
+});
+
+// 3. DELETE ITEM (Soft Delete dengan Password)
+app.delete('/api/items/:id', (req, res) => {
+    const db = readData();
+    const id = parseInt(req.params.id);
+    const userPassword = req.body.password;
+
+    // Cari barang berdasarkan ID
+    const itemIndex = db.items.findIndex(item => item.id === id);
+
+    if (itemIndex === -1) {
+        return res.status(404).json({ message: "Barang tidak ditemukan" });
+    }
+
+    // Cek Password
+    const item = db.items[itemIndex];
+    if (item.password !== userPassword) {
+        return res.status(401).json({ message: "Password salah!" });
+    }
+
+    // SOFT DELETE: Ubah status jadi resolved, jangan dihapus dari array
+    db.items[itemIndex].isResolved = true; 
+    
+    writeData(db);
+    res.json({ message: "Postingan berhasil dihapus/diselesaikan!" });
 });
 
 // === START SERVER ===

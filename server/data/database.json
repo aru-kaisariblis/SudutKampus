@@ -10,36 +10,5 @@
       "createdAt": 1768491565144
     }
   ],
-  "items": [
-    {
-      "id": 1768330553988,
-      "nama": "Bahlil",
-      "status": "HILANG",
-      "kontak": "83162919227",
-      "lokasi": "Akal sehatnua",
-      "deskripsi": "dicari dimana letak kewarasannya\r\n",
-      "foto": "/uploads/foto_barang-1768330553941-467164249.jpg",
-      "tanggal": "14 Jan, 02.55"
-    },
-    {
-      "id": 1768330640978,
-      "nama": "Fyneshit",
-      "status": "DITEMUKAN",
-      "kontak": "83162919227",
-      "lokasi": "Di manga",
-      "deskripsi": "-",
-      "foto": "/uploads/foto_barang-1768330640956-260049751.jpg",
-      "tanggal": "14 Jan, 02.57"
-    },
-    {
-      "id": 1768330673247,
-      "nama": "-",
-      "status": "DITEMUKAN",
-      "kontak": "83162919227",
-      "lokasi": "-",
-      "deskripsi": "nda tau mau isi apa\r\n",
-      "foto": "/uploads/foto_barang-1768330673242-77960390.jpg",
-      "tanggal": "14 Jan, 02.57"
-    }
-  ]
+  "items": []
 }

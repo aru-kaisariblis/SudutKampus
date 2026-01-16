@@ -153,63 +153,6 @@ function formatWhatsApp(number) {
     return cleaned;
 }
 
-// GANTI fungsi openDetail yang lama dengan ini:
-function openDetail(card) {
-    const detailModal = document.getElementById('detail-modal');
-
-    // 1. Ambil Data dari Atribut HTML (yang disiapkan loadItems)
-    const name = card.getAttribute('data-name');
-    const status = card.getAttribute('data-status');
-    const contact = card.getAttribute('data-contact'); 
-    const location = card.getAttribute('data-location') || '-';
-    const img = card.getAttribute('data-img');
-    const date = card.getAttribute('data-date');
-    const desc = card.getAttribute('data-desc') || '';
-
-    // 2. Isi ke Modal HTML
-    document.getElementById('detail-name').innerText = name;
-    
-    // Lokasi & Waktu
-    const locEl = document.getElementById('detail-location');
-    if(locEl) locEl.querySelector('span').innerText = location;
-    
-    const timeEl = document.getElementById('detail-time');
-    if(timeEl) timeEl.querySelector('span').innerText = date;
-    
-    // Foto
-    document.getElementById('detail-img').src = img;
-
-    // Status Badge
-    const statusElem = document.getElementById('detail-status');
-    statusElem.innerText = status;
-    statusElem.className = status === 'HILANG' 
-        ? 'status-tag bg-red-400 text-white px-4 py-1 rounded-full text-sm font-bold uppercase' 
-        : 'status-tag bg-green-400 text-white px-4 py-1 rounded-full text-sm font-bold uppercase';
-
-    // 3. Render Deskripsi & Tombol WhatsApp
-    const descContainer = document.getElementById('detail-desc');
-    const waNumber = formatWhatsApp(contact);
-    const waLink = `https://wa.me/${waNumber}?text=Halo, soal postingan *${name}* di U-Board...`;
-
-    const actionText = status === 'HILANG' ? "Menemukan barang ini?" : "Ini barang milikmu?";
-
-    descContainer.innerHTML = `
-        <div class="flex flex-col gap-3">
-            <p class="italic text-gray-600">"${desc}"</p>
-            <hr class="border-gray-200">
-            <div class="text-center mt-2">
-                <p class="text-sm text-gray-500 mb-2 font-bold">${actionText}</p>
-                <a href="${waLink}" target="_blank" class="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3 px-6 rounded-full shadow-md w-full no-underline transition-transform hover:scale-105">
-                    Hubungi via WhatsApp
-                </a>
-                <p class="text-[10px] text-gray-400 mt-2 font-mono">Nomor: ${contact}</p>
-            </div>
-        </div>
-    `;
-
-    detailModal.classList.remove('hidden');
-}
-
 // Tambahkan event listener ke semua kartu yang ada
 document.addEventListener('click', (e) => {
     const card = e.target.closest('.item-card');
@@ -347,6 +290,8 @@ async function loadItems() {
         const data = await res.json();
         const container = document.getElementById('items-grid'); 
 
+        
+
         if(container) {
             container.innerHTML = ''; // Hapus data lama/dummy
 
@@ -364,6 +309,7 @@ async function loadItems() {
                 const html = `
                     <div class="item-card ${categoryClass} bg-white flex flex-col p-4 rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer"
                          onclick="openDetailBackend(this)"
+                         data-id="${item.id}"
                          data-name="${item.nama}"
                          data-status="${item.status}"
                          data-contact="${kontak}"
@@ -397,30 +343,81 @@ async function loadItems() {
 
 // Kita buat fungsi Open Detail versi Upgrade (Biar datanya akurat dari backend)
 // Fungsi ini akan menimpa logika openDetail temanmu yang mengandalkan innerText
+// --- UPDATE FUNGSI INI DI js/app.js ---
+
 function openDetailBackend(card) {
     const modal = document.getElementById('detail-modal');
     
-    // Ambil data dari atribut data- yang kita tempel di atas
+    // 1. Ambil Data dari Atribut HTML
+    // Pastikan di loadItems() kamu sudah menambahkan data-id="${item.id}"
+    const id = card.getAttribute('data-id'); 
     const name = card.getAttribute('data-name');
     const status = card.getAttribute('data-status');
     const contact = card.getAttribute('data-contact');
     const img = card.getAttribute('data-img');
     const date = card.getAttribute('data-date');
 
-    // Isi ke Modal
+    // 2. Isi ke Modal HTML
     document.getElementById('detail-name').innerText = name;
-    document.getElementById('detail-status').innerText = status;
-    document.getElementById('detail-status').style.backgroundColor = status === 'HILANG' ? '#f87171' : '#4ade80';
+    
+    // Set Status Badge
+    const statusElem = document.getElementById('detail-status');
+    statusElem.innerText = status;
+    statusElem.className = status === 'HILANG' 
+        ? 'status-tag bg-red-400 text-white px-4 py-1 rounded-full text-sm font-bold uppercase' 
+        : 'status-tag bg-green-400 text-white px-4 py-1 rounded-full text-sm font-bold uppercase';
+    
     document.getElementById('detail-img').src = img;
     
-    // Deskripsi lebih lengkap
+    // Set Lokasi & Waktu (Opsional jika elemen ada)
+    const locElem = document.getElementById('detail-location');
+    if(locElem) locElem.querySelector('span').innerText = card.getAttribute('data-location') || '-';
+
+    const timeElem = document.getElementById('detail-time');
+    if(timeElem) timeElem.querySelector('span').innerText = date;
+
+    // 3. Render Deskripsi & TOMBOL HAPUS
     const descText = status === 'HILANG' 
         ? `Barang ini hilang pada tanggal ${date}. Jika menemukan, tolong hubungi:` 
         : `Barang ini ditemukan pada tanggal ${date}. Pemilik bisa menghubungi:`;
     
+    // Format WA
+    let waLink = "#";
+    if(contact) {
+        let cleanNum = contact.toString().replace(/\D/g, '');
+        if (cleanNum.startsWith('0')) cleanNum = '62' + cleanNum.slice(1);
+        waLink = `https://wa.me/${cleanNum}`;
+    }
+
+    // 👇 BAGIAN PENTING: MENAMPILKAN TOMBOL HAPUS 👇
+    // 👇 UPDATE BAGIAN INI AGAR TOMBOLNYA CANTIK 👇
+    // 👇 GANTI BAGIAN INI DI js/app.js 👇
     document.getElementById('detail-desc').innerHTML = `
-        <p>${descText}</p>
-        <p class="mt-2 font-bold text-xl text-blue-600">📞 ${contact}</p>
+        <div class="flex flex-col gap-3">
+            <p class="italic text-gray-600 text-lg leading-relaxed">"${card.getAttribute('data-desc')}"</p>
+            
+            <p class="text-sm text-gray-500 font-medium border-l-4 border-[#A890A6] pl-3 py-1 my-2 bg-gray-50 rounded-r-lg">
+                ${descText}
+            </p>
+            
+            <a href="${waLink}" target="_blank" class="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white font-sans font-bold py-3 px-6 rounded-full shadow-lg w-full no-underline transition-transform hover:-translate-y-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592z"/>
+                </svg>
+                <span class="whitespace-nowrap">Hubungi via WhatsApp</span>
+            </a>
+            
+            <p class="text-[10px] text-gray-400 text-center font-mono -mt-1">Nomor: ${contact}</p>
+
+            <div class="border-t border-dashed border-gray-200 my-1"></div>
+            
+            <button onclick="deleteItem('${id}')" class="group w-full inline-flex items-center justify-center gap-2 bg-white border-2 border-red-100 hover:border-red-400 hover:bg-red-50 text-red-400 font-bold font-sans py-2.5 px-6 rounded-full transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 group-hover:scale-110 transition-transform">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                </svg>
+                <span>Hapus Postingan</span>
+            </button>
+        </div>
     `;
 
     modal.classList.remove('hidden');
@@ -481,4 +478,35 @@ if (postForm) {
             alert("Terjadi kesalahan sistem.");
         }
     });
+}
+
+/* --- LOGIKA HAPUS BARANG --- */
+async function deleteItem(id) {
+    // 1. Minta Password ke User pakai Prompt sederhana
+    const password = prompt("Masukkan password yang kamu buat saat memposting barang ini:");
+
+    if (!password) return; // Kalau batal/kosong, stop.
+
+    try {
+        // 2. Kirim Request ke Server
+        const res = await fetch(`${API_URL}/items/${id}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: password })
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            alert("✅ " + result.message);
+            document.getElementById('detail-modal').classList.add('hidden'); // Tutup modal
+            loadItems(); // Refresh grid (barang akan hilang)
+        } else {
+            alert("❌ Gagal: " + result.message); // Password salah dll
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("Terjadi kesalahan koneksi.");
+    }
 }
